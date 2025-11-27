@@ -17,6 +17,8 @@
     .explanation { background: #f0f0f0; padding: 15px; border-radius: 10px; margin-top: 10px; font-size: 14px; }
     .day { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 5px; margin-top: 10px; }
     .day label { grid-column: 1 / -1; }
+    .download-btn { background: #10b981; margin-top: 15px; }
+    .download-btn:hover { background: #059669; }
   </style>
 </head>
 <body>
@@ -92,11 +94,14 @@
       <button onclick="calculatePay()">Submit</button>
       <div id="output" class="result" style="display:none"></div>
       <div id="explanation" class="explanation" style="display:none"></div>
+      <button id="downloadBtn" class="download-btn" style="display:none" onclick="downloadPayslip()">Download Payslip</button>
     </div>
-
+    
   </div>
 
   <script>
+    let lastCalculationData = {};
+
     function calculateTax(income) {
       let tax = 0;
       if (income <= 18200) tax = 0;
@@ -151,11 +156,13 @@
 
       const output = document.getElementById('output');
       const explanationDiv = document.getElementById('explanation');
+      const downloadBtn = document.getElementById('downloadBtn');
 
       if (errors.length > 0) {
           output.style.display = 'block';
           output.innerHTML = '<strong>Errors:</strong><br>' + errors.join('<br>');
           explanationDiv.style.display = 'none';
+          downloadBtn.style.display = 'none';
           return;
       }
 
@@ -164,6 +171,14 @@
       const annualNet = annualGross - annualTax;
       const weeklyNet = annualNet / 52;
 
+      lastCalculationData = {
+        totalGross: totalGross,
+        weeklyNet: weeklyNet,
+        annualGross: annualGross,
+        annualTax: annualTax,
+        annualNet: annualNet
+      };
+
       output.style.display = 'block';
       output.innerHTML = `<p><strong>Estimated Gross Pay:</strong> $${totalGross.toFixed(2)}</p>` +
                          `<p><strong>Estimated Net Pay (after Australian tax):</strong> $${weeklyNet.toFixed(2)}</p>`;
@@ -171,6 +186,29 @@
       explanationDiv.style.display = 'block';
       explanationDiv.innerHTML = `<strong>How the calculation was made:</strong><br>${explanationText}<br>` +
                                  `Annual gross income multiplied by 52, Australian tax applied, then divided by 52 for weekly net estimate.`;
+
+      downloadBtn.style.display = 'block';
+    }
+
+    function downloadPayslip() {
+      const data = lastCalculationData;
+      const today = new Date().toLocaleDateString();
+      
+      let csvContent = "PAYSLIP\n";
+      csvContent += `Generated: ${today}\n\n`;
+      csvContent += `Weekly Gross Pay,${data.totalGross.toFixed(2)}\n`;
+      csvContent += `Weekly Net Pay,${data.weeklyNet.toFixed(2)}\n\n`;
+      csvContent += `Annual Gross Income,${data.annualGross.toFixed(2)}\n`;
+      csvContent += `Annual Tax,${data.annualTax.toFixed(2)}\n`;
+      csvContent += `Annual Net Income,${data.annualNet.toFixed(2)}\n`;
+
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+      element.setAttribute('download', `payslip_${today.replace(/\//g, '-')}.csv`);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
     }
   </script>
 </body>
