@@ -16,8 +16,21 @@
     .section { margin-top: 30px; }
     .result { background: #eef2ff; padding: 15px; border-radius: 10px; margin-top: 20px; text-align: center; }
     .explanation { background: #f0f0f0; padding: 15px; border-radius: 10px; margin-top: 10px; font-size: 14px; }
-    .day { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 5px; margin-top: 10px; }
-    .day label { grid-column: 1 / -1; margin-top: 0; }
+    .day { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
+    .day-header { grid-column: 1 / -1; display: block; margin-bottom: 5px; }
+    .day label { margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; }
+    .day-holiday { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin: 5px 0; }
+    .day-holiday span { font-style: italic; font-size: 14px; }
+    .day-holiday input[type="checkbox"] { margin: 0; width: auto; padding: 0; }
+    .time-row { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+    .break-row { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+    .button-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+    .box-btn { padding: 20px; border: 2px solid #2563eb; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; background: white; transition: all 0.3s; position: relative; }
+    .box-btn:hover { background: #eef2ff; }
+    .box-btn.active { background: #2563eb; color: white; }
+    .box-btn .dollar-sign { position: absolute; top: 5px; left: 10px; font-size: 18px; font-weight: bold; }
+    .shifts-container { display: none; }
+    .shifts-container.active { display: block; }
     .button-group { display: flex; gap: 10px; }
     .download-btn { background: #10b981; flex: 1; }
     .download-btn:hover { background: #059669; }
@@ -48,55 +61,131 @@
 
     <div class="section">
       <h2>Step 2: Enter Your Weekly Shifts</h2>
-      <div id="shifts">
-        <div class="day">
-          <label>Monday</label>
-          <select id="monStart"><option value="">Start time</option></select>
-          <select id="monEnd"><option value="">End time</option></select>
-          <select id="monBreakStart"><option value="">Break start</option></select>
-          <select id="monBreakEnd"><option value="">Break end</option></select>
-        </div>
-        <div class="day">
-          <label>Tuesday</label>
-          <select id="tueStart"><option value="">Start time</option></select>
-          <select id="tueEnd"><option value="">End time</option></select>
-          <select id="tueBreakStart"><option value="">Break start</option></select>
-          <select id="tueBreakEnd"><option value="">Break end</option></select>
-        </div>
-        <div class="day">
-          <label>Wednesday</label>
-          <select id="wedStart"><option value="">Start time</option></select>
-          <select id="wedEnd"><option value="">End time</option></select>
-          <select id="wedBreakStart"><option value="">Break start</option></select>
-          <select id="wedBreakEnd"><option value="">Break end</option></select>
-        </div>
-        <div class="day">
-          <label>Thursday</label>
-          <select id="thuStart"><option value="">Start time</option></select>
-          <select id="thuEnd"><option value="">End time</option></select>
-          <select id="thuBreakStart"><option value="">Break start</option></select>
-          <select id="thuBreakEnd"><option value="">Break end</option></select>
-        </div>
-        <div class="day">
-          <label>Friday</label>
-          <select id="friStart"><option value="">Start time</option></select>
-          <select id="friEnd"><option value="">End time</option></select>
-          <select id="friBreakStart"><option value="">Break start</option></select>
-          <select id="friBreakEnd"><option value="">Break end</option></select>
-        </div>
-        <div class="day">
-          <label>Saturday</label>
-          <select id="satStart"><option value="">Start time</option></select>
-          <select id="satEnd"><option value="">End time</option></select>
-          <select id="satBreakStart"><option value="">Break start</option></select>
-          <select id="satBreakEnd"><option value="">Break end</option></select>
-        </div>
-        <div class="day">
-          <label>Sunday</label>
-          <select id="sunStart"><option value="">Start time</option></select>
-          <select id="sunEnd"><option value="">End time</option></select>
-          <select id="sunBreakStart"><option value="">Break start</option></select>
-          <select id="sunBreakEnd"><option value="">Break end</option></select>
+      <div class="button-boxes">
+        <div class="box-btn" id="shiftsBtn" onclick="window.showShiftsInput()">Enter Your Weekly Shifts</div>
+        <div class="box-btn" id="timesheetBtn" onclick="window.showTimesheetUpload()">$ Upload Your Timesheets</div>
+      </div>
+      <div class="shifts-container" id="shiftsInput">
+        <div id="shifts">
+          <div class="day">
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
+              <label style="margin-bottom: 8px; display: block;">Monday</label>
+            </div>
+            <div class="day-holiday">
+              <span>Public Holiday</span>
+              <input type="checkbox" id="monHoliday" />
+            </div>
+            <div class="time-row">
+              <select id="monStart"><option value="">Start time</option></select>
+              <select id="monEnd"><option value="">End time</option></select>
+            </div>
+            <div class="break-row">
+              <select id="monBreakStart"><option value="">Break start</option></select>
+              <select id="monBreakEnd"><option value="">Break end</option></select>
+            </div>
+          </div>
+          <div class="day">
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
+              <label style="margin-bottom: 8px; display: block;">Tuesday</label>
+            </div>
+            <div class="day-holiday">
+              <span>Public Holiday</span>
+              <input type="checkbox" id="tueHoliday" />
+            </div>
+            <div class="time-row">
+              <select id="tueStart"><option value="">Start time</option></select>
+              <select id="tueEnd"><option value="">End time</option></select>
+            </div>
+            <div class="break-row">
+              <select id="tueBreakStart"><option value="">Break start</option></select>
+              <select id="tueBreakEnd"><option value="">Break end</option></select>
+            </div>
+          </div>
+          <div class="day">
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
+              <label style="margin-bottom: 8px; display: block;">Wednesday</label>
+            </div>
+            <div class="day-holiday">
+              <span>Public Holiday</span>
+              <input type="checkbox" id="wedHoliday" />
+            </div>
+            <div class="time-row">
+              <select id="wedStart"><option value="">Start time</option></select>
+              <select id="wedEnd"><option value="">End time</option></select>
+            </div>
+            <div class="break-row">
+              <select id="wedBreakStart"><option value="">Break start</option></select>
+              <select id="wedBreakEnd"><option value="">Break end</option></select>
+            </div>
+          </div>
+          <div class="day">
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
+              <label style="margin-bottom: 8px; display: block;">Thursday</label>
+            </div>
+            <div class="day-holiday">
+              <span>Public Holiday</span>
+              <input type="checkbox" id="thuHoliday" />
+            </div>
+            <div class="time-row">
+              <select id="thuStart"><option value="">Start time</option></select>
+              <select id="thuEnd"><option value="">End time</option></select>
+            </div>
+            <div class="break-row">
+              <select id="thuBreakStart"><option value="">Break start</option></select>
+              <select id="thuBreakEnd"><option value="">Break end</option></select>
+            </div>
+          </div>
+          <div class="day">
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
+              <label style="margin-bottom: 8px; display: block;">Friday</label>
+            </div>
+            <div class="day-holiday">
+              <span>Public Holiday</span>
+              <input type="checkbox" id="friHoliday" />
+            </div>
+            <div class="time-row">
+              <select id="friStart"><option value="">Start time</option></select>
+              <select id="friEnd"><option value="">End time</option></select>
+            </div>
+            <div class="break-row">
+              <select id="friBreakStart"><option value="">Break start</option></select>
+              <select id="friBreakEnd"><option value="">Break end</option></select>
+            </div>
+          </div>
+          <div class="day">
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
+              <label style="margin-bottom: 8px; display: block;">Saturday</label>
+            </div>
+            <div class="day-holiday">
+              <span>Public Holiday</span>
+              <input type="checkbox" id="satHoliday" />
+            </div>
+            <div class="time-row">
+              <select id="satStart"><option value="">Start time</option></select>
+              <select id="satEnd"><option value="">End time</option></select>
+            </div>
+            <div class="break-row">
+              <select id="satBreakStart"><option value="">Break start</option></select>
+              <select id="satBreakEnd"><option value="">Break end</option></select>
+            </div>
+          </div>
+          <div class="day">
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
+              <label style="margin-bottom: 8px; display: block;">Sunday</label>
+            </div>
+            <div class="day-holiday">
+              <span>Public Holiday</span>
+              <input type="checkbox" id="sunHoliday" />
+            </div>
+            <div class="time-row">
+              <select id="sunStart"><option value="">Start time</option></select>
+              <select id="sunEnd"><option value="">End time</option></select>
+            </div>
+            <div class="break-row">
+              <select id="sunBreakStart"><option value="">Break start</option></select>
+              <select id="sunBreakEnd"><option value="">Break end</option></select>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -274,6 +363,18 @@
       if (event.target == modal) {
         modal.style.display = 'none';
       }
+    }
+
+    window.showShiftsInput = function() {
+      document.getElementById('shiftsInput').classList.add('active');
+      document.getElementById('shiftsBtn').classList.add('active');
+      document.getElementById('timesheetBtn').classList.remove('active');
+    }
+
+    window.showTimesheetUpload = function() {
+      document.getElementById('shiftsInput').classList.remove('active');
+      document.getElementById('timesheetBtn').classList.add('active');
+      document.getElementById('shiftsBtn').classList.remove('active');
     }
 
     window.addEventListener('DOMContentLoaded', populateTimeSelects);
