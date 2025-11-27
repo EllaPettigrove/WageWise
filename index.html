@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WageWise</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+    .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; }
+    h1, h2 { text-align: center; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; }
+    button { margin-top: 20px; padding: 12px; width: 100%; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #1e4fc7; }
+    .section { margin-top: 30px; }
+    .result { background: #eef2ff; padding: 15px; border-radius: 10px; margin-top: 20px; text-align: center; }
+    .explanation { background: #f0f0f0; padding: 15px; border-radius: 10px; margin-top: 10px; font-size: 14px; }
+    .day { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 5px; margin-top: 10px; }
+    .day label { grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WageWise</h1>
+
+    <div class="section">
+      <h2>Step 1: Award</h2>
+      <label>Hospitality Industry Award - Level 2</label>
+      <select id="award">
+        <option value="hospitality2">Hospitality Award - Level 2</option>
+      </select>
+      <p>If you do not know your award, <a href="https://calculate.fairwork.gov.au/FindYourAward?gclsrc=aw.ds&gad_source=1&gad_campaignid=23240839110&gbraid=0AAAABCANRmGrsifOsJqbT7scWd_b0QvML&gclid=CjwKCAiA55rJBhByEiwAFkY1QO1ii-NYnxn93LQX4TQSviJ5BGDOLnl44eMY1SGIEsjcHLmfSWfpyBoCUrAQAvD_BwE" target="_blank">click here</a> to find it.</p>
+    </div>
+
+    <div class="section">
+      <h2>Step 2: Enter Your Weekly Shifts</h2>
+      <div id="shifts">
+        <div class="day">
+          <label>Monday</label>
+          <input id="monStart" type="number" placeholder="Start hour (0-24)" />
+          <input id="monEnd" type="number" placeholder="End hour (0-24)" />
+          <input id="monBreakStart" type="number" placeholder="Break start" />
+          <input id="monBreakEnd" type="number" placeholder="Break end" />
+        </div>
+        <div class="day">
+          <label>Tuesday</label>
+          <input id="tueStart" type="number" placeholder="Start" />
+          <input id="tueEnd" type="number" placeholder="End" />
+          <input id="tueBreakStart" type="number" placeholder="Break start" />
+          <input id="tueBreakEnd" type="number" placeholder="Break end" />
+        </div>
+        <div class="day">
+          <label>Wednesday</label>
+          <input id="wedStart" type="number" placeholder="Start" />
+          <input id="wedEnd" type="number" placeholder="End" />
+          <input id="wedBreakStart" type="number" placeholder="Break start" />
+          <input id="wedBreakEnd" type="number" placeholder="Break end" />
+        </div>
+        <div class="day">
+          <label>Thursday</label>
+          <input id="thuStart" type="number" placeholder="Start" />
+          <input id="thuEnd" type="number" placeholder="End" />
+          <input id="thuBreakStart" type="number" placeholder="Break start" />
+          <input id="thuBreakEnd" type="number" placeholder="Break end" />
+        </div>
+        <div class="day">
+          <label>Friday</label>
+          <input id="friStart" type="number" placeholder="Start" />
+          <input id="friEnd" type="number" placeholder="End" />
+          <input id="friBreakStart" type="number" placeholder="Break start" />
+          <input id="friBreakEnd" type="number" placeholder="Break end" />
+        </div>
+        <div class="day">
+          <label>Saturday</label>
+          <input id="satStart" type="number" placeholder="Start" />
+          <input id="satEnd" type="number" placeholder="End" />
+          <input id="satBreakStart" type="number" placeholder="Break start" />
+          <input id="satBreakEnd" type="number" placeholder="Break end" />
+        </div>
+        <div class="day">
+          <label>Sunday</label>
+          <input id="sunStart" type="number" placeholder="Start" />
+          <input id="sunEnd" type="number" placeholder="End" />
+          <input id="sunBreakStart" type="number" placeholder="Break start" />
+          <input id="sunBreakEnd" type="number" placeholder="Break end" />
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Step 3: Calculate Your Pay</h2>
+      <button onclick="calculatePay()">Submit</button>
+      <div id="output" class="result" style="display:none"></div>
+      <div id="explanation" class="explanation" style="display:none"></div>
+    </div>
+
+  </div>
+
+  <script>
+    function calculateTax(income) {
+      let tax = 0;
+      if (income <= 18200) tax = 0;
+      else if (income <= 45000) tax = (income - 18200) * 0.16;
+      else if (income <= 135000) tax = 4288 + (income - 45000) * 0.30;
+      else if (income <= 190000) tax = 31288 + (income - 135000) * 0.37;
+      else tax = 51638 + (income - 190000) * 0.45;
+      return tax;
+    }
+
+    function calculatePay() {
+      const dayRates = {
+        weekdayDay: 32.21,
+        weekdayEvening: 32.21 + 2.81,
+        weekdayNight: 32.21 + 4.22,
+        saturday: 38.78
+      };
+
+      const dayIds = ['mon','tue','wed','thu','fri','sat','sun'];
+      let totalGross = 0;
+      let explanationText = '';
+      let errors = [];
+
+      dayIds.forEach(id => {
+          const start = parseFloat(document.getElementById(id + 'Start').value);
+          const end = parseFloat(document.getElementById(id + 'End').value);
+          const bStart = parseFloat(document.getElementById(id + 'BreakStart').value);
+          const bEnd = parseFloat(document.getElementById(id + 'BreakEnd').value);
+
+          if (!isNaN(start) && !isNaN(end)) {
+              let pay = 0;
+              let dayRatesApplied = [];
+              for (let hour = start; hour < end; hour += 1) {
+                  let currentHour = hour % 24;
+                  if (!isNaN(bStart) && !isNaN(bEnd) && currentHour >= bStart && currentHour < bEnd) continue;
+
+                  let rate = 0;
+                  if (id !== 'sat') {
+                      if (currentHour >= 7 && currentHour < 19) rate = dayRates.weekdayDay;
+                      else if (currentHour >= 19 && currentHour < 24) rate = dayRates.weekdayEvening;
+                      else rate = dayRates.weekdayNight;
+                  } else {
+                      rate = dayRates.saturday;
+                  }
+                  pay += rate;
+                  dayRatesApplied.push(rate.toFixed(2));
+              }
+              explanationText += `${id.toUpperCase()}: Hourly rates applied = [${dayRatesApplied.join(', ')}], Day total = $${pay.toFixed(2)}<br>`;
+              totalGross += pay;
+          }
+      });
+
+      const output = document.getElementById('output');
+      const explanationDiv = document.getElementById('explanation');
+
+      if (errors.length > 0) {
+          output.style.display = 'block';
+          output.innerHTML = '<strong>Errors:</strong><br>' + errors.join('<br>');
+          explanationDiv.style.display = 'none';
+          return;
+      }
+
+      const annualGross = totalGross * 52;
+      const annualTax = calculateTax(annualGross);
+      const annualNet = annualGross - annualTax;
+      const weeklyNet = annualNet / 52;
+
+      output.style.display = 'block';
+      output.innerHTML = `<p><strong>Estimated Gross Pay:</strong> $${totalGross.toFixed(2)}</p>` +
+                         `<p><strong>Estimated Net Pay (after Australian tax):</strong> $${weeklyNet.toFixed(2)}</p>`;
+
+      explanationDiv.style.display = 'block';
+      explanationDiv.innerHTML = `<strong>How the calculation was made:</strong><br>${explanationText}<br>` +
+                                 `Annual gross income multiplied by 52, Australian tax applied, then divided by 52 for weekly net estimate.`;
+    }
+  </script>
+</body>
+</html>
