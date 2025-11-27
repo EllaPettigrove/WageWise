@@ -9,16 +9,28 @@
     .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; }
     h1, h2 { text-align: center; }
     label { display: block; margin-top: 15px; font-weight: bold; }
-    input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; }
+    input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
+    select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
     button { margin-top: 20px; padding: 12px; width: 100%; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
     button:hover { background: #1e4fc7; }
     .section { margin-top: 30px; }
     .result { background: #eef2ff; padding: 15px; border-radius: 10px; margin-top: 20px; text-align: center; }
     .explanation { background: #f0f0f0; padding: 15px; border-radius: 10px; margin-top: 10px; font-size: 14px; }
     .day { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 5px; margin-top: 10px; }
-    .day label { grid-column: 1 / -1; }
-    .download-btn { background: #10b981; margin-top: 15px; }
+    .day label { grid-column: 1 / -1; margin-top: 0; }
+    .button-group { display: flex; gap: 10px; }
+    .download-btn { background: #10b981; flex: 1; }
     .download-btn:hover { background: #059669; }
+    .help-btn { background: #ef4444; flex: 1; }
+    .help-btn:hover { background: #dc2626; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background-color: white; margin: 5% auto; padding: 30px; border-radius: 12px; width: 80%; max-width: 600px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .modal-title { font-size: 28px; font-weight: bold; color: #dc2626; margin-bottom: 15px; }
+    .modal-text { font-size: 16px; line-height: 1.6; margin-bottom: 20px; }
+    .close-modal { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close-modal:hover { color: #000; }
+    .modal-link { color: #2563eb; text-decoration: none; }
+    .modal-link:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -39,52 +51,52 @@
       <div id="shifts">
         <div class="day">
           <label>Monday</label>
-          <input id="monStart" type="number" placeholder="Start hour (0-24)" />
-          <input id="monEnd" type="number" placeholder="End hour (0-24)" />
-          <input id="monBreakStart" type="number" placeholder="Break start" />
-          <input id="monBreakEnd" type="number" placeholder="Break end" />
+          <select id="monStart"><option value="">Start time</option></select>
+          <select id="monEnd"><option value="">End time</option></select>
+          <select id="monBreakStart"><option value="">Break start</option></select>
+          <select id="monBreakEnd"><option value="">Break end</option></select>
         </div>
         <div class="day">
           <label>Tuesday</label>
-          <input id="tueStart" type="number" placeholder="Start" />
-          <input id="tueEnd" type="number" placeholder="End" />
-          <input id="tueBreakStart" type="number" placeholder="Break start" />
-          <input id="tueBreakEnd" type="number" placeholder="Break end" />
+          <select id="tueStart"><option value="">Start time</option></select>
+          <select id="tueEnd"><option value="">End time</option></select>
+          <select id="tueBreakStart"><option value="">Break start</option></select>
+          <select id="tueBreakEnd"><option value="">Break end</option></select>
         </div>
         <div class="day">
           <label>Wednesday</label>
-          <input id="wedStart" type="number" placeholder="Start" />
-          <input id="wedEnd" type="number" placeholder="End" />
-          <input id="wedBreakStart" type="number" placeholder="Break start" />
-          <input id="wedBreakEnd" type="number" placeholder="Break end" />
+          <select id="wedStart"><option value="">Start time</option></select>
+          <select id="wedEnd"><option value="">End time</option></select>
+          <select id="wedBreakStart"><option value="">Break start</option></select>
+          <select id="wedBreakEnd"><option value="">Break end</option></select>
         </div>
         <div class="day">
           <label>Thursday</label>
-          <input id="thuStart" type="number" placeholder="Start" />
-          <input id="thuEnd" type="number" placeholder="End" />
-          <input id="thuBreakStart" type="number" placeholder="Break start" />
-          <input id="thuBreakEnd" type="number" placeholder="Break end" />
+          <select id="thuStart"><option value="">Start time</option></select>
+          <select id="thuEnd"><option value="">End time</option></select>
+          <select id="thuBreakStart"><option value="">Break start</option></select>
+          <select id="thuBreakEnd"><option value="">Break end</option></select>
         </div>
         <div class="day">
           <label>Friday</label>
-          <input id="friStart" type="number" placeholder="Start" />
-          <input id="friEnd" type="number" placeholder="End" />
-          <input id="friBreakStart" type="number" placeholder="Break start" />
-          <input id="friBreakEnd" type="number" placeholder="Break end" />
+          <select id="friStart"><option value="">Start time</option></select>
+          <select id="friEnd"><option value="">End time</option></select>
+          <select id="friBreakStart"><option value="">Break start</option></select>
+          <select id="friBreakEnd"><option value="">Break end</option></select>
         </div>
         <div class="day">
           <label>Saturday</label>
-          <input id="satStart" type="number" placeholder="Start" />
-          <input id="satEnd" type="number" placeholder="End" />
-          <input id="satBreakStart" type="number" placeholder="Break start" />
-          <input id="satBreakEnd" type="number" placeholder="Break end" />
+          <select id="satStart"><option value="">Start time</option></select>
+          <select id="satEnd"><option value="">End time</option></select>
+          <select id="satBreakStart"><option value="">Break start</option></select>
+          <select id="satBreakEnd"><option value="">Break end</option></select>
         </div>
         <div class="day">
           <label>Sunday</label>
-          <input id="sunStart" type="number" placeholder="Start" />
-          <input id="sunEnd" type="number" placeholder="End" />
-          <input id="sunBreakStart" type="number" placeholder="Break start" />
-          <input id="sunBreakEnd" type="number" placeholder="Break end" />
+          <select id="sunStart"><option value="">Start time</option></select>
+          <select id="sunEnd"><option value="">End time</option></select>
+          <select id="sunBreakStart"><option value="">Break start</option></select>
+          <select id="sunBreakEnd"><option value="">Break end</option></select>
         </div>
       </div>
     </div>
@@ -94,13 +106,51 @@
       <button onclick="calculatePay()">Submit</button>
       <div id="output" class="result" style="display:none"></div>
       <div id="explanation" class="explanation" style="display:none"></div>
-      <button id="downloadBtn" class="download-btn" style="display:none" onclick="downloadPayslip()">Download Payslip</button>
+      <div class="button-group" style="display:none" id="buttonGroup">
+        <button id="downloadBtn" class="download-btn" onclick="downloadPayslip()">Download Payslip</button>
+        <button id="helpBtn" class="help-btn" onclick="showUnderpaymentModal()">My pay does not look right</button>
+      </div>
     </div>
     
   </div>
 
+  <div id="underpaymentModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeUnderpaymentModal()">&times;</span>
+      <div class="modal-title">Underpayment Claims</div>
+      <div class="modal-text">
+        <p>Wage theft is a serious crime and we are here to support you.</p>
+        <p>For advice on what to do if you suspect you have been underpaid by your employer, please see the Fair Work Information Page <a href="https://www.fairwork.gov.au/workplace-problems/common-workplace-problems/my-pay-doesnt-seem-right" target="_blank" class="modal-link">here</a>.</p>
+      </div>
+    </div>
+  </div>
+
   <script>
     let lastCalculationData = {};
+
+    function populateTimeSelects() {
+      const times = [];
+      for (let i = 0; i < 24; i++) {
+        for (let mins = 0; mins < 60; mins += 15) {
+          const hour = i === 0 ? '12' : i < 12 ? i : i === 12 ? '12' : (i - 12);
+          const period = i < 12 ? 'am' : 'pm';
+          const minStr = mins === 0 ? '00' : mins;
+          const label = hour + '.' + minStr + period;
+          const value = i + (mins / 60);
+          times.push({ label: label, value: value });
+        }
+      }
+
+      const selects = document.querySelectorAll('select[id$="Start"], select[id$="End"], select[id$="BreakStart"], select[id$="BreakEnd"]');
+      selects.forEach(select => {
+        times.forEach(time => {
+          const option = document.createElement('option');
+          option.value = time.value;
+          option.textContent = time.label;
+          select.appendChild(option);
+        });
+      });
+    }
 
     function calculateTax(income) {
       let tax = 0;
@@ -156,13 +206,13 @@
 
       const output = document.getElementById('output');
       const explanationDiv = document.getElementById('explanation');
-      const downloadBtn = document.getElementById('downloadBtn');
+      const buttonGroup = document.getElementById('buttonGroup');
 
       if (errors.length > 0) {
           output.style.display = 'block';
           output.innerHTML = '<strong>Errors:</strong><br>' + errors.join('<br>');
           explanationDiv.style.display = 'none';
-          downloadBtn.style.display = 'none';
+          buttonGroup.style.display = 'none';
           return;
       }
 
@@ -187,7 +237,7 @@
       explanationDiv.innerHTML = `<strong>How the calculation was made:</strong><br>${explanationText}<br>` +
                                  `Annual gross income multiplied by 52, Australian tax applied, then divided by 52 for weekly net estimate.`;
 
-      downloadBtn.style.display = 'block';
+      buttonGroup.style.display = 'flex';
     }
 
     function downloadPayslip() {
@@ -210,6 +260,23 @@
       element.click();
       document.body.removeChild(element);
     }
+
+    function showUnderpaymentModal() {
+      document.getElementById('underpaymentModal').style.display = 'block';
+    }
+
+    function closeUnderpaymentModal() {
+      document.getElementById('underpaymentModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('underpaymentModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', populateTimeSelects);
   </script>
 </body>
 </html>
