@@ -7,8 +7,11 @@
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
     .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; }
-    h1, h2 { text-align: center; }
+    .logo { width: 50px; height: 50px; margin-bottom: 20px; }
+    .header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; justify-content: center; }
+    .header h1 { margin: 0; }
     label { display: block; margin-top: 15px; font-weight: bold; }
+    .section label:first-of-type { text-align: center; }
     input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
     select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
     button { margin-top: 20px; padding: 12px; width: 100%; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
@@ -17,8 +20,8 @@
     .result { background: #eef2ff; padding: 15px; border-radius: 10px; margin-top: 20px; text-align: center; }
     .explanation { background: #f0f0f0; padding: 15px; border-radius: 10px; margin-top: 10px; font-size: 14px; }
     .day { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
-    .day-header { grid-column: 1 / -1; display: block; margin-bottom: 5px; }
-    .day label { margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; }
+    .day-header { grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left; }
+    .day label { margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left; }
     .day-holiday { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin: 5px 0; }
     .day-holiday span { font-style: italic; font-size: 14px; }
     .day-holiday input[type="checkbox"] { margin: 0; width: auto; padding: 0; }
@@ -26,9 +29,12 @@
     .break-row { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
     .button-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
     .box-btn { padding: 20px; border: 2px solid #2563eb; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; background: white; transition: all 0.3s; position: relative; }
+    .box-btn#shiftsBtn { background: #d1fae5; border-color: #059669; }
+    .box-btn#timesheetBtn { background: #dbeafe; border-color: #1e40af; position: relative; }
+    .box-btn#timesheetBtn::before { content: none; }
     .box-btn:hover { background: #eef2ff; }
     .box-btn.active { background: #2563eb; color: white; }
-    .box-btn .dollar-sign { position: absolute; top: 5px; left: 10px; font-size: 18px; font-weight: bold; }
+    .box-btn .dollar-sign { display: none; }
     .shifts-container { display: none; }
     .shifts-container.active { display: block; }
     .button-group { display: flex; gap: 10px; }
@@ -48,28 +54,40 @@
 </head>
 <body>
   <div class="container">
-    <h1>WageWise</h1>
-
-    <div class="section">
-      <h2>Step 1: Award</h2>
-      <label>Hospitality Industry Award - Level 2</label>
-      <select id="award">
-        <option value="hospitality2">Hospitality Award - Level 2</option>
-      </select>
-      <p>If you do not know your award, <a href="https://calculate.fairwork.gov.au/FindYourAward?gclsrc=aw.ds&gad_source=1&gad_campaignid=23240839110&gbraid=0AAAABCANRmGrsifOsJqbT7scWd_b0QvML&gclid=CjwKCAiA55rJBhByEiwAFkY1QO1ii-NYnxn93LQX4TQSviJ5BGDOLnl44eMY1SGIEsjcHLmfSWfpyBoCUrAQAvD_BwE" target="_blank">click here</a> to find it.</p>
+    <div class="header">
+      <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Payslip document -->
+        <rect x="20" y="15" width="60" height="70" rx="3" fill="#2563eb" stroke="#1e4fc7" stroke-width="2"/>
+        <!-- Lines on payslip -->
+        <line x1="28" y1="28" x2="72" y2="28" stroke="white" stroke-width="2"/>
+        <line x1="28" y1="38" x2="72" y2="38" stroke="white" stroke-width="2"/>
+        <line x1="28" y1="48" x2="72" y2="48" stroke="white" stroke-width="2"/>
+        <!-- Checkmark -->
+        <path d="M 35 65 L 42 72 L 58 55" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1>WageWise</h1>
     </div>
 
     <div class="section">
-      <h2>Step 2: Enter Your Weekly Shifts</h2>
+      <h2 style="text-align: center;">Step 1: Award</h2>
+      <label>Select Your Award</label>
+      <select id="award">
+        <option value="hospitality2">Hospitality Award - Level 2</option>
+      </select>
+      <p style="font-size: 14px;"><i>If unknown, find your award <a href="https://calculate.fairwork.gov.au/FindYourAward?gclsrc=aw.ds&gad_source=1&gad_campaignid=23240839110&gbraid=0AAAABCANRmGrsifOsJqbT7scWd_b0QvML&gclid=CjwKCAiA55rJBhByEiwAFkY1QO1ii-NYnxn93LQX4TQSviJ5BGDOLnl44eMY1SGIEsjcHLmfSWfpyBoCUrAQAvD_BwE" target="_blank">here</a>.</i></p>
+    </div>
+
+    <div class="section">
+      <h2 style="text-align: center;">Step 2: Hours Worked</h2>
       <div class="button-boxes">
         <div class="box-btn" id="shiftsBtn" onclick="window.showShiftsInput()">Enter Your Weekly Shifts</div>
-        <div class="box-btn" id="timesheetBtn" onclick="window.showTimesheetUpload()">$ Upload Your Timesheets</div>
+        <div class="box-btn" id="timesheetBtn" onclick="window.showTimesheetUpload()">Upload Your Timesheets</div>
       </div>
       <div class="shifts-container" id="shiftsInput">
         <div id="shifts">
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
-              <label style="margin-bottom: 8px; display: block;">Monday</label>
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
+              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Monday</label>
             </div>
             <div class="day-holiday">
               <span>Public Holiday</span>
@@ -85,8 +103,8 @@
             </div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
-              <label style="margin-bottom: 8px; display: block;">Tuesday</label>
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
+              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Tuesday</label>
             </div>
             <div class="day-holiday">
               <span>Public Holiday</span>
@@ -102,8 +120,8 @@
             </div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
-              <label style="margin-bottom: 8px; display: block;">Wednesday</label>
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
+              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Wednesday</label>
             </div>
             <div class="day-holiday">
               <span>Public Holiday</span>
@@ -119,8 +137,8 @@
             </div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
-              <label style="margin-bottom: 8px; display: block;">Thursday</label>
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
+              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Thursday</label>
             </div>
             <div class="day-holiday">
               <span>Public Holiday</span>
@@ -136,8 +154,8 @@
             </div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
-              <label style="margin-bottom: 8px; display: block;">Friday</label>
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
+              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Friday</label>
             </div>
             <div class="day-holiday">
               <span>Public Holiday</span>
@@ -153,8 +171,8 @@
             </div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
-              <label style="margin-bottom: 8px; display: block;">Saturday</label>
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
+              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Saturday</label>
             </div>
             <div class="day-holiday">
               <span>Public Holiday</span>
@@ -170,8 +188,8 @@
             </div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px;">
-              <label style="margin-bottom: 8px; display: block;">Sunday</label>
+            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
+              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Sunday</label>
             </div>
             <div class="day-holiday">
               <span>Public Holiday</span>
@@ -191,7 +209,7 @@
     </div>
 
     <div class="section">
-      <h2>Step 3: Calculate Your Pay</h2>
+      <h2 style="text-align: center;">Step 3: Calculate Your Pay</h2>
       <button onclick="calculatePay()">Submit</button>
       <div id="output" class="result" style="display:none"></div>
       <div id="explanation" class="explanation" style="display:none"></div>
