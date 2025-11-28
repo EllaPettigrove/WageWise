@@ -11,7 +11,6 @@
     .header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; justify-content: center; }
     .header h1 { margin: 0; }
     label { display: block; margin-top: 15px; font-weight: bold; }
-    .section label:first-of-type { text-align: center; }
     input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
     select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
     button { margin-top: 20px; padding: 12px; width: 100%; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
@@ -30,11 +29,9 @@
     .button-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
     .box-btn { padding: 20px; border: 2px solid #2563eb; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; background: white; transition: all 0.3s; position: relative; }
     .box-btn#shiftsBtn { background: #d1fae5; border-color: #059669; }
-    .box-btn#timesheetBtn { background: #dbeafe; border-color: #1e40af; position: relative; }
-    .box-btn#timesheetBtn::before { content: none; }
+    .box-btn#timesheetBtn { background: #dbeafe; border-color: #1e40af; }
     .box-btn:hover { background: #eef2ff; }
     .box-btn.active { background: #2563eb; color: white; }
-    .box-btn .dollar-sign { display: none; }
     .shifts-container { display: none; }
     .shifts-container.active { display: block; }
     .button-group { display: flex; gap: 10px; }
@@ -50,166 +47,87 @@
     .close-modal:hover { color: #000; }
     .modal-link { color: #2563eb; text-decoration: none; }
     .modal-link:hover { text-decoration: underline; }
+    h1, h2 { text-align: center; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <!-- Payslip document -->
         <rect x="20" y="15" width="60" height="70" rx="3" fill="#2563eb" stroke="#1e4fc7" stroke-width="2"/>
-        <!-- Lines on payslip -->
         <line x1="28" y1="28" x2="72" y2="28" stroke="white" stroke-width="2"/>
         <line x1="28" y1="38" x2="72" y2="38" stroke="white" stroke-width="2"/>
         <line x1="28" y1="48" x2="72" y2="48" stroke="white" stroke-width="2"/>
-        <!-- Checkmark -->
         <path d="M 35 65 L 42 72 L 58 55" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <h1>WageWise</h1>
     </div>
 
     <div class="section">
-      <h2 style="text-align: center;">Step 1: Award</h2>
+      <h2>Step 1: Award</h2>
       <label>Select Your Award</label>
       <select id="award">
         <option value="hospitality2">Hospitality Award - Level 2</option>
       </select>
-      <p style="font-size: 14px;"><i>If unknown, find your award <a href="https://calculate.fairwork.gov.au/FindYourAward?gclsrc=aw.ds&gad_source=1&gad_campaignid=23240839110&gbraid=0AAAABCANRmGrsifOsJqbT7scWd_b0QvML&gclid=CjwKCAiA55rJBhByEiwAFkY1QO1ii-NYnxn93LQX4TQSviJ5BGDOLnl44eMY1SGIEsjcHLmfSWfpyBoCUrAQAvD_BwE" target="_blank">here</a>.</i></p>
+      <p style="font-size: 14px;"><i>If unknown, find your award <a href="https://calculate.fairwork.gov.au/FindYourAward" target="_blank">here</a>.</i></p>
     </div>
 
     <div class="section">
-      <h2 style="text-align: center;">Step 2: Hours Worked</h2>
+      <h2>Step 2: Hours Worked</h2>
       <div class="button-boxes">
-        <div class="box-btn" id="shiftsBtn" onclick="window.showShiftsInput()">Enter Your Weekly Shifts</div>
-        <div class="box-btn" id="timesheetBtn" onclick="window.showTimesheetUpload()">Upload Your Timesheets<br><i style="font-size: 12px; display: block;">Be Wiser and Subscribe</i></div>
+        <div class="box-btn" id="shiftsBtn" onclick="showShiftsInput()">Enter Your Weekly Shifts</div>
+        <div class="box-btn" id="timesheetBtn" onclick="showTimesheetUpload()">Upload Your Timesheets<br><i style="font-size: 12px; display: block;">Be Wiser and Subscribe</i></div>
       </div>
       <div class="shifts-container" id="shiftsInput">
         <div id="shifts">
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
-              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Monday</label>
-            </div>
-            <div class="day-holiday">
-              <span>Public Holiday</span>
-              <input type="checkbox" id="monHoliday" />
-            </div>
-            <div class="time-row">
-              <select id="monStart"><option value="">Start time</option></select>
-              <select id="monEnd"><option value="">End time</option></select>
-            </div>
-            <div class="break-row">
-              <select id="monBreakStart"><option value="">Break start</option></select>
-              <select id="monBreakEnd"><option value="">Break end</option></select>
-            </div>
+            <div class="day-header"><label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Monday</label></div>
+            <div class="day-holiday"><span>Public Holiday</span><input type="checkbox" id="monHoliday" /></div>
+            <div class="time-row"><select id="monStart"><option value="">Start time</option></select><select id="monEnd"><option value="">End time</option></select></div>
+            <div class="break-row"><select id="monBreakStart"><option value="">Break start</option></select><select id="monBreakEnd"><option value="">Break end</option></select></div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
-              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Tuesday</label>
-            </div>
-            <div class="day-holiday">
-              <span>Public Holiday</span>
-              <input type="checkbox" id="tueHoliday" />
-            </div>
-            <div class="time-row">
-              <select id="tueStart"><option value="">Start time</option></select>
-              <select id="tueEnd"><option value="">End time</option></select>
-            </div>
-            <div class="break-row">
-              <select id="tueBreakStart"><option value="">Break start</option></select>
-              <select id="tueBreakEnd"><option value="">Break end</option></select>
-            </div>
+            <div class="day-header"><label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Tuesday</label></div>
+            <div class="day-holiday"><span>Public Holiday</span><input type="checkbox" id="tueHoliday" /></div>
+            <div class="time-row"><select id="tueStart"><option value="">Start time</option></select><select id="tueEnd"><option value="">End time</option></select></div>
+            <div class="break-row"><select id="tueBreakStart"><option value="">Break start</option></select><select id="tueBreakEnd"><option value="">Break end</option></select></div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
-              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Wednesday</label>
-            </div>
-            <div class="day-holiday">
-              <span>Public Holiday</span>
-              <input type="checkbox" id="wedHoliday" />
-            </div>
-            <div class="time-row">
-              <select id="wedStart"><option value="">Start time</option></select>
-              <select id="wedEnd"><option value="">End time</option></select>
-            </div>
-            <div class="break-row">
-              <select id="wedBreakStart"><option value="">Break start</option></select>
-              <select id="wedBreakEnd"><option value="">Break end</option></select>
-            </div>
+            <div class="day-header"><label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Wednesday</label></div>
+            <div class="day-holiday"><span>Public Holiday</span><input type="checkbox" id="wedHoliday" /></div>
+            <div class="time-row"><select id="wedStart"><option value="">Start time</option></select><select id="wedEnd"><option value="">End time</option></select></div>
+            <div class="break-row"><select id="wedBreakStart"><option value="">Break start</option></select><select id="wedBreakEnd"><option value="">Break end</option></select></div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
-              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Thursday</label>
-            </div>
-            <div class="day-holiday">
-              <span>Public Holiday</span>
-              <input type="checkbox" id="thuHoliday" />
-            </div>
-            <div class="time-row">
-              <select id="thuStart"><option value="">Start time</option></select>
-              <select id="thuEnd"><option value="">End time</option></select>
-            </div>
-            <div class="break-row">
-              <select id="thuBreakStart"><option value="">Break start</option></select>
-              <select id="thuBreakEnd"><option value="">Break end</option></select>
-            </div>
+            <div class="day-header"><label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Thursday</label></div>
+            <div class="day-holiday"><span>Public Holiday</span><input type="checkbox" id="thuHoliday" /></div>
+            <div class="time-row"><select id="thuStart"><option value="">Start time</option></select><select id="thuEnd"><option value="">End time</option></select></div>
+            <div class="break-row"><select id="thuBreakStart"><option value="">Break start</option></select><select id="thuBreakEnd"><option value="">Break end</option></select></div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
-              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Friday</label>
-            </div>
-            <div class="day-holiday">
-              <span>Public Holiday</span>
-              <input type="checkbox" id="friHoliday" />
-            </div>
-            <div class="time-row">
-              <select id="friStart"><option value="">Start time</option></select>
-              <select id="friEnd"><option value="">End time</option></select>
-            </div>
-            <div class="break-row">
-              <select id="friBreakStart"><option value="">Break start</option></select>
-              <select id="friBreakEnd"><option value="">Break end</option></select>
-            </div>
+            <div class="day-header"><label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Friday</label></div>
+            <div class="day-holiday"><span>Public Holiday</span><input type="checkbox" id="friHoliday" /></div>
+            <div class="time-row"><select id="friStart"><option value="">Start time</option></select><select id="friEnd"><option value="">End time</option></select></div>
+            <div class="break-row"><select id="friBreakStart"><option value="">Break start</option></select><select id="friBreakEnd"><option value="">Break end</option></select></div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
-              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Saturday</label>
-            </div>
-            <div class="day-holiday">
-              <span>Public Holiday</span>
-              <input type="checkbox" id="satHoliday" />
-            </div>
-            <div class="time-row">
-              <select id="satStart"><option value="">Start time</option></select>
-              <select id="satEnd"><option value="">End time</option></select>
-            </div>
-            <div class="break-row">
-              <select id="satBreakStart"><option value="">Break start</option></select>
-              <select id="satBreakEnd"><option value="">Break end</option></select>
-            </div>
+            <div class="day-header"><label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Saturday</label></div>
+            <div class="day-holiday"><span>Public Holiday</span><input type="checkbox" id="satHoliday" /></div>
+            <div class="time-row"><select id="satStart"><option value="">Start time</option></select><select id="satEnd"><option value="">End time</option></select></div>
+            <div class="break-row"><select id="satBreakStart"><option value="">Break start</option></select><select id="satBreakEnd"><option value="">Break end</option></select></div>
           </div>
           <div class="day">
-            <div class="day-header" style="grid-column: 1 / -1; display: block; margin-bottom: 5px; text-align: left;">
-              <label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Sunday</label>
-            </div>
-            <div class="day-holiday">
-              <span>Public Holiday</span>
-              <input type="checkbox" id="sunHoliday" />
-            </div>
-            <div class="time-row">
-              <select id="sunStart"><option value="">Start time</option></select>
-              <select id="sunEnd"><option value="">End time</option></select>
-            </div>
-            <div class="break-row">
-              <select id="sunBreakStart"><option value="">Break start</option></select>
-              <select id="sunBreakEnd"><option value="">Break end</option></select>
-            </div>
+            <div class="day-header"><label style="margin-bottom: 8px; display: block; margin-top: 0; font-weight: bold; text-align: left;">Sunday</label></div>
+            <div class="day-holiday"><span>Public Holiday</span><input type="checkbox" id="sunHoliday" /></div>
+            <div class="time-row"><select id="sunStart"><option value="">Start time</option></select><select id="sunEnd"><option value="">End time</option></select></div>
+            <div class="break-row"><select id="sunBreakStart"><option value="">Break start</option></select><select id="sunBreakEnd"><option value="">Break end</option></select></div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="section">
-      <h2 style="text-align: center;">Step 3: Calculate Your Pay</h2>
+      <h2>Step 3: Calculate Your Pay</h2>
       <button onclick="calculatePay()">Submit</button>
       <div id="output" class="result" style="display:none"></div>
       <div id="explanation" class="explanation" style="display:none"></div>
@@ -218,7 +136,6 @@
         <button id="helpBtn" class="help-btn" onclick="showUnderpaymentModal()">My pay does not look right</button>
       </div>
     </div>
-    
   </div>
 
   <div id="underpaymentModal" class="modal">
@@ -262,66 +179,115 @@
     function calculateTax(income) {
       let tax = 0;
       if (income <= 18200) tax = 0;
-      else if (income <= 45000) tax = (income - 18200) * 0.16;
-      else if (income <= 135000) tax = 4288 + (income - 45000) * 0.30;
+      else if (income <= 45000) tax = (income - 18200) * 0.19;
+      else if (income <= 135000) tax = 4288 + (income - 45000) * 0.325;
       else if (income <= 190000) tax = 31288 + (income - 135000) * 0.37;
       else tax = 51638 + (income - 190000) * 0.45;
       return tax;
     }
 
     function calculatePay() {
-      const dayRates = {
-        weekdayDay: 32.21,
-        weekdayEvening: 32.21 + 2.81,
-        weekdayNight: 32.21 + 4.22,
-        saturday: 38.78
-      };
-
       const dayIds = ['mon','tue','wed','thu','fri','sat','sun'];
       let totalGross = 0;
       let explanationText = '';
-      let errors = [];
 
       dayIds.forEach(id => {
           const start = parseFloat(document.getElementById(id + 'Start').value);
           const end = parseFloat(document.getElementById(id + 'End').value);
           const bStart = parseFloat(document.getElementById(id + 'BreakStart').value);
           const bEnd = parseFloat(document.getElementById(id + 'BreakEnd').value);
+          const isPublicHoliday = document.getElementById(id + 'Holiday').checked;
 
-          if (!isNaN(start) && !isNaN(end)) {
+          if (!isNaN(start) && !isNaN(end) && end > start) {
               let pay = 0;
-              let dayRatesApplied = [];
-              for (let hour = start; hour < end; hour += 1) {
-                  let currentHour = hour % 24;
-                  if (!isNaN(bStart) && !isNaN(bEnd) && currentHour >= bStart && currentHour < bEnd) continue;
+              let breakdown = [];
 
-                  let rate = 0;
-                  if (id !== 'sat') {
-                      if (currentHour >= 7 && currentHour < 19) rate = dayRates.weekdayDay;
-                      else if (currentHour >= 19 && currentHour < 24) rate = dayRates.weekdayEvening;
-                      else rate = dayRates.weekdayNight;
-                  } else {
-                      rate = dayRates.saturday;
+              if (isPublicHoliday) {
+                  // Public holiday - all hours at $64.63
+                  let hours = end - start;
+                  if (!isNaN(bStart) && !isNaN(bEnd) && bEnd > bStart) {
+                      hours -= (bEnd - bStart);
                   }
-                  pay += rate;
-                  dayRatesApplied.push(rate.toFixed(2));
+                  if (hours > 0) {
+                      pay = hours * 64.63;
+                      breakdown.push(`$64.63 × ${hours.toFixed(2)}h (Public Holiday)`);
+                  }
+              } else if (id === 'sat') {
+                  let hours = end - start;
+                  if (!isNaN(bStart) && !isNaN(bEnd) && bEnd > bStart) {
+                      hours -= (bEnd - bStart);
+                  }
+                  if (hours > 0) {
+                      pay = hours * 38.78;
+                      breakdown.push(`$38.78 × ${hours.toFixed(2)}h`);
+                  }
+              } else if (id === 'sun') {
+                  let hours = end - start;
+                  if (!isNaN(bStart) && !isNaN(bEnd) && bEnd > bStart) {
+                      hours -= (bEnd - bStart);
+                  }
+                  if (hours > 0) {
+                      pay = hours * 45.24;
+                      breakdown.push(`$45.24 × ${hours.toFixed(2)}h`);
+                  }
+              } else {
+                  // Monday-Friday
+                  // Night: 0-7 hours = $36.53
+                  // Day: 7-19 hours = $32.21
+                  // Evening: 19-24 hours = $35.02
+
+                  // Calculate night hours
+                  if (start < 7) {
+                      let nEnd = Math.min(end, 7);
+                      let nHours = nEnd - start;
+                      if (!isNaN(bStart) && !isNaN(bEnd) && bStart >= start && bEnd <= nEnd) {
+                          nHours -= (bEnd - bStart);
+                      }
+                      if (nHours > 0) {
+                          pay += nHours * 36.53;
+                          breakdown.push(`$36.53 × ${nHours.toFixed(2)}h`);
+                      }
+                  }
+
+                  // Calculate day hours
+                  if (start < 19 && end > 7) {
+                      let dStart = Math.max(start, 7);
+                      let dEnd = Math.min(end, 19);
+                      let dHours = dEnd - dStart;
+                      if (!isNaN(bStart) && !isNaN(bEnd) && bStart >= dStart && bEnd <= dEnd) {
+                          dHours -= (bEnd - bStart);
+                      }
+                      if (dHours > 0) {
+                          pay += dHours * 32.21;
+                          breakdown.push(`$32.21 × ${dHours.toFixed(2)}h`);
+                      }
+                  }
+
+                  // Calculate evening hours
+                  if (end > 19) {
+                      let eStart = Math.max(start, 19);
+                      let eEnd = Math.min(end, 24);
+                      let eHours = eEnd - eStart;
+                      if (!isNaN(bStart) && !isNaN(bEnd) && bStart >= eStart && bEnd <= eEnd) {
+                          eHours -= (bEnd - bStart);
+                      }
+                      if (eHours > 0) {
+                          pay += eHours * 35.02;
+                          breakdown.push(`$35.02 × ${eHours.toFixed(2)}h`);
+                      }
+                  }
               }
-              explanationText += `${id.toUpperCase()}: Hourly rates applied = [${dayRatesApplied.join(', ')}], Day total = $${pay.toFixed(2)}<br>`;
-              totalGross += pay;
+
+              if (pay > 0) {
+                  explanationText += `${id.charAt(0).toUpperCase() + id.slice(1)}: ${breakdown.join(' + ')} = ${pay.toFixed(2)}<br>`;
+                  totalGross += pay;
+              }
           }
       });
 
       const output = document.getElementById('output');
       const explanationDiv = document.getElementById('explanation');
       const buttonGroup = document.getElementById('buttonGroup');
-
-      if (errors.length > 0) {
-          output.style.display = 'block';
-          output.innerHTML = '<strong>Errors:</strong><br>' + errors.join('<br>');
-          explanationDiv.style.display = 'none';
-          buttonGroup.style.display = 'none';
-          return;
-      }
 
       const annualGross = totalGross * 52;
       const annualTax = calculateTax(annualGross);
@@ -350,7 +316,6 @@
     function downloadPayslip() {
       const data = lastCalculationData;
       const today = new Date().toLocaleDateString();
-      
       let csvContent = "PAYSLIP\n";
       csvContent += `Generated: ${today}\n\n`;
       csvContent += `Weekly Gross Pay,${data.totalGross.toFixed(2)}\n`;
@@ -376,23 +341,23 @@
       document.getElementById('underpaymentModal').style.display = 'none';
     }
 
-    window.onclick = function(event) {
-      const modal = document.getElementById('underpaymentModal');
-      if (event.target == modal) {
-        modal.style.display = 'none';
-      }
-    }
-
-    window.showShiftsInput = function() {
+    function showShiftsInput() {
       document.getElementById('shiftsInput').classList.add('active');
       document.getElementById('shiftsBtn').classList.add('active');
       document.getElementById('timesheetBtn').classList.remove('active');
     }
 
-    window.showTimesheetUpload = function() {
+    function showTimesheetUpload() {
       document.getElementById('shiftsInput').classList.remove('active');
       document.getElementById('timesheetBtn').classList.add('active');
       document.getElementById('shiftsBtn').classList.remove('active');
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('underpaymentModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
     }
 
     window.addEventListener('DOMContentLoaded', populateTimeSelects);
