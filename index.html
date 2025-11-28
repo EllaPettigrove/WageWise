@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WageWise</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+    body { font-family: 'Times New Roman', Times, serif; background: #f4f4f4; margin: 0; padding: 20px; }
     .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; }
     .logo { width: 50px; height: 50px; margin-bottom: 20px; }
     .header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; justify-content: center; }
@@ -48,11 +48,16 @@
     .modal-link { color: #2563eb; text-decoration: none; }
     .modal-link:hover { text-decoration: underline; }
     h1, h2 { text-align: center; }
+    .title-box { color: #333; padding: 20px 0; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 20px; }
+    .title-box .logo { margin-bottom: 0; width: 60px; height: 60px; flex-shrink: 0; }
+    .title-content { flex: 1; text-align: center; max-width: 400px; }
+    .title-content h1 { margin: 0 0 10px 0; font-size: 32px; text-align: center; color: #2563eb; }
+    .title-content p { margin: 0; font-size: 14px; line-height: 1.4; font-style: italic; color: #333; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
+    <div class="title-box">
       <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <rect x="20" y="15" width="60" height="70" rx="3" fill="#2563eb" stroke="#1e4fc7" stroke-width="2"/>
         <line x1="28" y1="28" x2="72" y2="28" stroke="white" stroke-width="2"/>
@@ -60,7 +65,14 @@
         <line x1="28" y1="48" x2="72" y2="48" stroke="white" stroke-width="2"/>
         <path d="M 35 65 L 42 72 L 58 55" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <h1>WageWise</h1>
+      <div class="title-content">
+        <h1>WageWise</h1>
+        <p>WageWise calculates your pay so that you don't have to.</p>
+      </div>
+    </div>
+
+    <div class="header">
+      </svg>
     </div>
 
     <div class="section">
@@ -133,7 +145,7 @@
       <div id="explanation" class="explanation" style="display:none"></div>
       <div class="button-group" style="display:none" id="buttonGroup">
         <button id="downloadBtn" class="download-btn" onclick="downloadPayslip()">Download Payslip</button>
-        <button id="helpBtn" class="help-btn" onclick="showUnderpaymentModal()">My pay does not look right</button>
+        <button id="helpBtn" class="help-btn" onclick="showUnderpaymentModal()">My Pay Does Not Look Right</button>
       </div>
     </div>
   </div>
